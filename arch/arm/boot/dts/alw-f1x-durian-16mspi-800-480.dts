@@ -24,7 +24,7 @@
 	};
 
 	panel: panel {
-		compatible = "qiaodian,qd43003c0-40", "simple-panel";
+		compatible = "lg,lb070wv8", "simple-panel";
 		#address-cells = <1>;
 		#size-cells = <0>;
 		enable-gpios = <&pio 4 6 GPIO_ACTIVE_HIGH>;
@@ -68,19 +68,43 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&spi0_pins_a>;
 	status = "okay";
-
-	flash@0 {
+	spi-max-frequency = <50000000>;
+	flash:w25q128@0 {
 		#address-cells = <1>;
 		#size-cells = <1>;
 		compatible = "winbond,w25q128", "jedec,spi-nor";
 		reg = <0>;
-		spi-max-frequency = <40000000>;
+		spi-max-frequency = <50000000>;
+		partitions {
+			compatible = "fixed-partitions";
+			#address-cells = <1>;
+			#size-cells = <1>;
+			partition@0 {
+		                label = "u-boot";
+	                	reg = <0x000000 0x090000>;
+        		        read-only;
+			};
+		        partition@100000 {
+                		label = "dtb";
+		                reg = <0x090000 0x010000>;
+                		read-only;
+            		};
+			partition@110000 {
+	                	label = "kernel";
+	        	        reg = <0x0a0000 0x400000>;
+        	        	read-only;
+	            	};
+		        partition@510000 {
+                		label = "rootfs";
+		                reg = <0x4a0000 0xb60000>;
+            		};
+		};
 	};
 };
 
 &tcon0 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&lcd_rgb666_pins>;
+	pinctrl-0 = <&lcd_rgb565_pins>;
 	status = "okay";
 };
 
@@ -115,6 +139,31 @@
 };
 
 &usbphy {
-	usb0_id_det-gpio = <&pio 4 2 GPIO_ACTIVE_HIGH>; /* PE2 */
+	usb0_id_det = <&pio 4 2 GPIO_ACTIVE_HIGH>; /* PE2 */
 	status = "okay";
 };
+
+&i2c0 {
+    	pinctrl-0 = <&i2c0_pins_d>;
+   	pinctrl-names = "default";
+    	status = "okay";
+
+	ns2009: ns2009@48 {
+		compatible = "nsiway,ns2009";
+		reg = <0x48>;
+	};
+
+/*    	gt911: touchscreen@14 {
+        	compatible = "goodix,gt911";
+	        reg = <0x14>;
+        	interrupt-parent = <&pio>;
+	        interrupts = <4 3 IRQ_TYPE_EDGE_FALLING>; // (PE03)
+	        pinctrl-names = "default";
+	        pinctrl-0 = <&ts_reset_pin>;
+	        irq-gpios = <&pio 4 3 GPIO_ACTIVE_HIGH>; // (PE03)
+	        reset-gpios = <&pio 4 9 GPIO_ACTIVE_HIGH>; // RST (PE9)
+	        // touchscreen-swapped-x-y
+	};
+*/
+};
+
