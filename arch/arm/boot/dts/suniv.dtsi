@@ -238,18 +238,23 @@
 				function = "lcd";
 			};
 
-			uart0_pins_e: uart-pins-pe {
+			uart0_pins_e: uart0-pins-pe {
 				pins = "PE0", "PE1";
 				function = "uart0";
 			};
 
-                        uart1_pins_a: uart-pins-pa {
+                        uart1_pins_a: uart1-pins-pa {
                                 pins = "PA2", "PA3";
                                 function = "uart1";
                         };
 
-                        uart2_pins_e: uart-pins-pe-uart2 {
+                        uart2_pins_e: uart2-pins-pe {
                                 pins = "PE7", "PE8";
+                                function = "uart2";
+                        };
+
+                        uart2_pins_d: uart2-pins-pd {
+                                pins = "PD13", "PD14";
                                 function = "uart2";
                         };
 
@@ -267,6 +272,11 @@
 			        pins = "PD0", "PD12";
 			        function = "i2c0";
 			};
+
+                        i2c2_pins_d: i2c2-pins-pd {
+                                pins = "PD15", "PD16";
+                                function = "i2c2";
+                        };
 		};
 
 		timer@1c20c00 {

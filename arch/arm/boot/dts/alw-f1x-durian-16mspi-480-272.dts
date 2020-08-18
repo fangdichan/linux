@@ -142,3 +142,28 @@
 	usb0_id_det-gpio = <&pio 4 2 GPIO_ACTIVE_HIGH>; /* PE2 */
 	status = "okay";
 };
+
+&i2c0 {
+        pinctrl-0 = <&i2c0_pins_d>;
+        pinctrl-names = "default";
+        status = "okay";
+
+        ns2009: ns2009@48 {
+                compatible = "nsiway,ns2009";
+                reg = <0x48>;
+        };
+
+/*      gt911: touchscreen@14 {
+                compatible = "goodix,gt911";
+                reg = <0x14>;
+                interrupt-parent = <&pio>;
+                interrupts = <4 3 IRQ_TYPE_EDGE_FALLING>; // (PE03)
+                pinctrl-names = "default";
+                pinctrl-0 = <&ts_reset_pin>;
+                irq-gpios = <&pio 4 3 GPIO_ACTIVE_HIGH>; // (PE03)
+                reset-gpios = <&pio 4 9 GPIO_ACTIVE_HIGH>; // RST (PE9)
+                // touchscreen-swapped-x-y
+        };
+*/
+};
+
